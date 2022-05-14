@@ -1,5 +1,5 @@
 from dao.genre import GenreDAO
-from dao.model.genre import GenreSchema
+from schemas.genre import GenreSchema
 
 
 class GenresService:

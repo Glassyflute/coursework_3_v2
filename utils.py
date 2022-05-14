@@ -100,8 +100,8 @@ def userdata_temp(func):
 
         # decoded_token_item = decode_token(token)
         # print(f"decoded_token_item - {decoded_token_item}")
-        # username = decoded_token_item["username"]
-        # return username
+        # email = decoded_token_item["email"]
+        # return email
 
     return wrapper
 

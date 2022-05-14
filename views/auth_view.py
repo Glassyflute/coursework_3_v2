@@ -12,13 +12,13 @@ class AuthView(Resource):
         new_data = request.json
 
         # # проверяем, что оба поля (логин-пароль) не пустые.
-        # username = req_json.get("username", None)
+        # email = req_json.get("email", None)
         # password = req_json.get("password", None)
-        # if None in [username, password]:
+        # if None in [email, password]:
         #     abort(400)
         #
         # # проверяем, что пользователь существует в Базе.
-        # user = db.session.query(User).filter(User.username == username).first()
+        # user = db.session.query(User).filter(User.email == email).first()
         # if user is None:
         #     return {"error": "Неверные учётные данные"}, 401
 
@@ -28,7 +28,7 @@ class AuthView(Resource):
         print(password_new_data)
 
         # получаем хэшированный пароль пользователя из БД.
-        user_db = auth_user_service.get_one_by_username(new_data)
+        user_db = auth_user_service.get_one_by_email(new_data)
         print(user_db)
         password_db = user_db["password"]
 
@@ -38,7 +38,7 @@ class AuthView(Resource):
 
         # генерируем токены.
         data = {
-            "username": user_db["username"],
+            "email": user_db["email"],
             "role": user_db["role"]
         }
 
@@ -59,15 +59,15 @@ class AuthView(Resource):
         decoded_token = decode_token(refresh_token)
         print(f"Decoded token - {decoded_token}")
 
-        user_db = auth_user_service.get_one_by_username(decoded_token)
+        user_db = auth_user_service.get_one_by_email(decoded_token)
         print(user_db)
-        # username = decoded_token.get("username")
-        # user = db.session.query(User).filter(User.username == username).first()
+        # email = decoded_token.get("email")
+        # user = db.session.query(User).filter(User.email == email).first()
         # if user is None:
         #     return {"error": "Неверные учётные данные"}, 401
 
         data = {
-            "username": user_db["username"],
+            "email": user_db["email"],
             "role": user_db["role"]
         }
         print(data)

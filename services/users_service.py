@@ -1,5 +1,5 @@
 from dao.user import UserDAO
-from dao.model.user import UserSchema
+from schemas.user import UserSchema
 from utils import get_hash
 
 
@@ -12,8 +12,8 @@ class UsersService:
         item_serialized = UserSchema().dump(item_db)
         return item_serialized
 
-    def get_one_by_username(self, item_data):
-        item_db = self.dao.get_one_by_username(item_data)
+    def get_one_by_email(self, item_data):
+        item_db = self.dao.get_one_by_email(item_data)
         item_serialized = UserSchema().dump(item_db)
         return item_serialized
 
@@ -30,8 +30,8 @@ class UsersService:
         self.dao.update(new_data)
         return self.dao
 
-    def update_by_username(self, new_data):
-        self.dao.update_by_username(new_data)
+    def update_by_email(self, new_data):
+        self.dao.update_by_email(new_data)
         return self.dao
 
     def delete(self, item_id):
@@ -50,7 +50,7 @@ class UsersService:
             return new_data
 
 
-    # username = new_data.get("username", None)
+    # email = new_data.get("email", None)
     # password = new_data.get("password", None)
-    # if None in [username, password]:
+    # if None in [email, password]:
     #     abort(400)

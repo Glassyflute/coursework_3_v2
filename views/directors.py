@@ -10,7 +10,7 @@ director_ns = Namespace('directors')
 
 @director_ns.route('/')
 class DirectorsView(Resource):
-    @auth_required
+    # @auth_required
     def get(self):
         return director_service.get_all(), 200
 
@@ -23,7 +23,7 @@ class DirectorsView(Resource):
 
 @director_ns.route('/<int:item_id>')
 class DirectorView(Resource):
-    @auth_required
+    # @auth_required
     def get(self, item_id):
         return director_service.get_one(item_id), 200
 

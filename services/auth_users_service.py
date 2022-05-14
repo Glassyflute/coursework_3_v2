@@ -1,5 +1,5 @@
 from dao.auth import AuthUserDAO
-from dao.model.user import UserSchema
+from schemas.user import UserSchema
 from utils import get_hash
 
 
@@ -13,8 +13,8 @@ class AuthUsersService:
         item_serialized = UserSchema().dump(item_db)
         return item_serialized
 
-    def get_one_by_username(self, item_data):
-        item_db = self.dao.get_one_by_username(item_data)
+    def get_one_by_email(self, item_data):
+        item_db = self.dao.get_one_by_email(item_data)
         item_serialized = UserSchema().dump(item_db)
         return item_serialized
 

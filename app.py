@@ -39,9 +39,9 @@ def create_data(app, db):
         # db.drop_all(tables="user", checkfirst=True)
         db.create_all()
 
-        u1 = User(username="vasya", password=get_hash("my_little_pony"), role="user")
-        u2 = User(username="oleg", password=get_hash("qwerty"), role="user")
-        u3 = User(username="olga", password=get_hash("P@ssw0rd"), role="admin")
+        u1 = User(email="vasya@gmail.com", password=get_hash("my_little_pony"), role="user")
+        u2 = User(email="oleg@gmail.com", password=get_hash("qwerty"), role="user")
+        u3 = User(email="olga@gmail.com", password=get_hash("P@ssw0rd"), role="admin")
 
         with db.session.begin():
             db.session.add_all([u1, u2, u3])

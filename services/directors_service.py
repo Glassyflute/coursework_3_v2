@@ -1,5 +1,5 @@
 from dao.director import DirectorDAO
-from dao.model.director import DirectorSchema
+from schemas.director import DirectorSchema
 
 
 class DirectorsService:

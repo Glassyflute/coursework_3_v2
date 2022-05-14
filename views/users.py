@@ -23,9 +23,9 @@ class UsersView(Resource):
     def post(self):
         new_data = request.json
 
-        username = new_data.get("username", None)
+        email = new_data.get("email", None)
         password = new_data.get("password", None)
-        if None in [username, password]:
+        if None in [email, password]:
             abort(400)
 
         # заменяем пароль в словаре по пользователю на хэш пароля.

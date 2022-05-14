@@ -10,9 +10,9 @@ class UserDAO:
         item = self.session.query(User).filter(User.id == item_id).one_or_none()
         return item
 
-    def get_one_by_username(self, item_data):
-        username = item_data.get("username")
-        item = self.session.query(User).filter(User.username == username).one_or_none()
+    def get_one_by_email(self, item_data):
+        email = item_data.get("email")
+        item = self.session.query(User).filter(User.email == email).one_or_none()
         return item
 
     def get_all(self):
@@ -40,9 +40,9 @@ class UserDAO:
         item = self.session.query(User).filter(User.id == item_id).update(new_data)
         self.session.commit()
 
-    def update_by_username(self, new_data):
-        username = new_data.get("username")
-        item = self.session.query(User).filter(User.username == username).update(new_data)
+    def update_by_email(self, new_data):
+        email = new_data.get("email")
+        item = self.session.query(User).filter(User.email == email).update(new_data)
         self.session.commit()
 
     def delete(self, item_id):

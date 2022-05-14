@@ -20,9 +20,9 @@ class UsersView(Resource):
         показывает информацию из профиля пользователя
         """
         # new_data = request.json
-        # user has provided username & password at login step, so data on username would allow identifying
+        # user has provided email & password at login step, so data on email would allow identifying
         # row with data on user in database
-        # decorator would check user's token data, which contains username as well
+        # decorator would check user's token data, which contains email as well
 
         new_data = request.json
         access_token = new_data.get("access_token")
@@ -31,7 +31,7 @@ class UsersView(Resource):
         decoded_token = decode_token(access_token)
         print(f"Decoded token - {decoded_token}")
 
-        return user_service.get_one_by_username(decoded_token), 200
+        return user_service.get_one_by_email(decoded_token), 200
 
     def patch(self):
         """
@@ -39,7 +39,7 @@ class UsersView(Resource):
         """
         new_data = request.json
         # unknown user here if only Role is submitted. updates if Username is submitted.
-        user_db = user_service.get_one_by_username(new_data)
+        user_db = user_service.get_one_by_email(new_data)
         print(f"user_db - {user_db}")
 
         # # field by field
@@ -52,7 +52,7 @@ class UsersView(Resource):
 
         # general update === prohibit indicating Role as admin by user -default user to be changed by admin only.
         # or use above to allow updating only 3 non-required fields, password is updated separately.
-        user_service.update_by_username(new_data)
+        user_service.update_by_email(new_data)
 
         return "", 204
 
@@ -68,7 +68,7 @@ class UsersView(Resource):
         user_service.hash_old_new_passwords(new_data)
         print(f"new_data with passwords - {new_data}")
 
-        user_db = user_service.get_one_by_username(new_data)
+        user_db = user_service.get_one_by_email(new_data)
         print(f"user_db - {user_db}")
         password_db = user_db["password"]
 
@@ -79,15 +79,15 @@ class UsersView(Resource):
         user_db["password"] = new_hashed_password
 
         data_to_update = {
-            "username": user_db["username"],
+            "email": user_db["email"],
             "password": user_db["password"]
         }
 
-        user_service.update_by_username(data_to_update)
+        user_service.update_by_email(data_to_update)
 
         # генерируем токены.
         data = {
-            "username": user_db["username"],
+            "email": user_db["email"],
             "role": user_db["role"]
         }
 
