@@ -1,5 +1,5 @@
 from dao.model.director import Director
-from flask import request
+from flask import request, abort
 
 
 class DirectorDAO:
@@ -32,6 +32,9 @@ class DirectorDAO:
 
     def update(self, new_data):
         item_id = new_data.get("id")
+        if item_id is None:
+            abort(401)
+
         item = self.session.query(Director).filter(Director.id == item_id).update(new_data)
         self.session.commit()
 

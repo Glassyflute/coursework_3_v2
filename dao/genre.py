@@ -1,5 +1,5 @@
 from dao.model.genre import Genre
-from flask import request
+from flask import request, abort
 
 
 class GenreDAO:
@@ -32,17 +32,11 @@ class GenreDAO:
 
     def update(self, new_data):
         item_id = new_data.get("id")
+        if item_id is None:
+            abort(401)
+
         item = self.session.query(Genre).filter(Genre.id == item_id).update(new_data)
-
-        # if item_id is None:
-        #     abort(401, message="Indicate id in data submitted to proceed with updating.")
-
-        # if item != 1:
-        #     ...
         self.session.commit()
-
-    #     if director_first is None:
-    #         return "", 404
 
     def delete(self, item_id):
         item = self.get_one(item_id)

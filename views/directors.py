@@ -5,12 +5,10 @@ from container import director_service
 
 director_ns = Namespace('directors')
 
-# user is able to see the data on all and single director (via get)
-# admin is able to see the data on all and single director, as well as create, update or delete data on director
 
 @director_ns.route('/')
 class DirectorsView(Resource):
-    # @auth_required
+    @auth_required
     def get(self):
         return director_service.get_all(), 200
 
@@ -23,7 +21,7 @@ class DirectorsView(Resource):
 
 @director_ns.route('/<int:item_id>')
 class DirectorView(Resource):
-    # @auth_required
+    @auth_required
     def get(self, item_id):
         return director_service.get_one(item_id), 200
 

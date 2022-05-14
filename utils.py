@@ -87,21 +87,4 @@ def admin_required(func):
     return wrapper
 
 
-# ideas unclear here
-def userdata_temp(func):
-    def wrapper(*args, **kwargs):
-        new_data = request.json
-        access_token = new_data.get("access_token")
-        if access_token is None:
-            abort(400)
-        decoded_token = decode_token(access_token)
-        print(f"Decoded token - {decoded_token}")
-        return decoded_token
-
-        # decoded_token_item = decode_token(token)
-        # print(f"decoded_token_item - {decoded_token_item}")
-        # email = decoded_token_item["email"]
-        # return email
-
-    return wrapper
 

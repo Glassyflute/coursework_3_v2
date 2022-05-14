@@ -1,5 +1,5 @@
 from dao.model.movie import Movie
-from flask import request
+from flask import request, abort
 
 
 class MovieDAO:
@@ -50,6 +50,9 @@ class MovieDAO:
 
     def update(self, new_data):
         item_id = new_data.get("id")
+        if item_id is None:
+            abort(401)
+
         item = self.session.query(Movie).filter(Movie.id == item_id).update(new_data)
         self.session.commit()
 

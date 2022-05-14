@@ -1,17 +1,10 @@
 from flask_restx import Resource, Namespace
 from flask import request, abort
 from container import user_service
-from utils import auth_required, admin_required
+from utils import admin_required
 
 user_ns = Namespace('users')
 
-
-# all views can be accessed/modified by admin
-# admin is able to:
-# see all users data and data on single user (via get)
-# add new users (via post)
-# update user's profile (via put)
-# delete user (via delete)
 
 @user_ns.route('/')
 class UsersView(Resource):

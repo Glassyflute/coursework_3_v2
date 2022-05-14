@@ -3,7 +3,6 @@ from schemas.user import UserSchema
 from utils import get_hash
 
 
-# CRUD
 class AuthUsersService:
     def __init__(self, dao: AuthUserDAO):
         self.dao = dao

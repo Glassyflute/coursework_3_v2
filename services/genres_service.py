@@ -24,9 +24,6 @@ class GenresService:
         self.dao.update(new_data)
         return self.dao
 
-    # if genre_first is None:
-    #     return "", 404
-
     def delete(self, item_id):
         self.dao.delete(item_id)
 

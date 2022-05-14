@@ -49,8 +49,3 @@ class UsersService:
             new_data["password_new"] = get_hash(new_data["password_new"])
             return new_data
 
-
-    # email = new_data.get("email", None)
-    # password = new_data.get("password", None)
-    # if None in [email, password]:
-    #     abort(400)

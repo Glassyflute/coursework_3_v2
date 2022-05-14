@@ -36,7 +36,6 @@ def register_extensions(app):
 
 def create_data(app, db):
     with app.app_context():
-        # db.drop_all(tables="user", checkfirst=True)
         db.create_all()
 
         u1 = User(email="vasya@gmail.com", password=get_hash("my_little_pony"), role="user")

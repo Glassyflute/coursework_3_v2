@@ -9,27 +9,24 @@ auth_ns = Namespace('auth')
 @auth_ns.route('/login')
 class AuthView(Resource):
     def post(self):
+        """
+        позволяет пользователю залогиниться и получить 2 токена.
+        :return:
+        """
         new_data = request.json
 
-        # # проверяем, что оба поля (логин-пароль) не пустые.
-        # email = req_json.get("email", None)
-        # password = req_json.get("password", None)
-        # if None in [email, password]:
-        #     abort(400)
-        #
-        # # проверяем, что пользователь существует в Базе.
-        # user = db.session.query(User).filter(User.email == email).first()
-        # if user is None:
-        #     return {"error": "Неверные учётные данные"}, 401
+        # проверяем, что оба поля (логин-пароль) не пустые.
+        email = new_data.get("email", None)
+        password = new_data.get("password", None)
+        if None in [email, password]:
+            abort(400)
 
         # получаем хэш пароля пользователя.
         auth_user_service.hash_password(new_data)
         password_new_data = new_data.get("password")
-        print(password_new_data)
 
         # получаем хэшированный пароль пользователя из БД.
         user_db = auth_user_service.get_one_by_email(new_data)
-        print(user_db)
         password_db = user_db["password"]
 
         # проверяем, что хэши пароля пользователя из базы и при авторизации совпадают.
@@ -42,10 +39,13 @@ class AuthView(Resource):
             "role": user_db["role"]
         }
 
-        print(data)
         return generate_tokens(data), 201
 
     def put(self):
+        """
+        позволяет получить 2 обновленных токена.
+        :return:
+        """
         new_data = request.json
 
         refresh_token = new_data.get("refresh_token")
@@ -60,24 +60,30 @@ class AuthView(Resource):
         print(f"Decoded token - {decoded_token}")
 
         user_db = auth_user_service.get_one_by_email(decoded_token)
-        print(user_db)
-        # email = decoded_token.get("email")
-        # user = db.session.query(User).filter(User.email == email).first()
-        # if user is None:
-        #     return {"error": "Неверные учётные данные"}, 401
+        if user_db is None:
+            return {"error": "Неверные учётные данные"}, 401
 
         data = {
             "email": user_db["email"],
             "role": user_db["role"]
         }
-        print(data)
+
         return generate_tokens(data), 201
 
 
 @auth_ns.route('/register')
 class AuthView(Resource):
+    """
+    позволяет пользователю зарегистрироваться.
+    """
     def post(self):
         new_data = request.json
+
+        user_role = new_data.get("role")
+        if not user_role:
+            abort(400)
+        if user_role != "user":
+            abort(400)
 
         auth_user_service.hash_password(new_data)
         auth_user_service.create(new_data)

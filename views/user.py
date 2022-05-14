@@ -1,64 +1,41 @@
 from flask_restx import Resource, Namespace
 from flask import request, abort
 from container import user_service
-from utils import userdata_temp, generate_tokens, decode_token
+from utils import generate_tokens, decode_token, auth_required
 
 user_profile_ns = Namespace('user')
 
-# user is able to:
-# see the user profile data (via get)
-# update non-required fields of profile (via patch)
-# change user's password (via put)
-# user is unable to access data on other users, only admin is able to get access to other users' data.
 
-# чтобы все ссылки корректно работали, их нужно обернуть в декоратор, в котором мы будем проверять переданный токен???
 @user_profile_ns.route('/')
 class UsersView(Resource):
-    # @userdata_temp
+    @auth_required
     def get(self):
         """
         показывает информацию из профиля пользователя
         """
-        # new_data = request.json
-        # user has provided email & password at login step, so data on email would allow identifying
-        # row with data on user in database
-        # decorator would check user's token data, which contains email as well
-
         new_data = request.json
-        access_token = new_data.get("access_token")
-        if access_token is None:
-            abort(400)
-        decoded_token = decode_token(access_token)
-        print(f"Decoded token - {decoded_token}")
+        return user_service.get_one_by_email(new_data), 200
 
-        return user_service.get_one_by_email(decoded_token), 200
-
+    @auth_required
     def patch(self):
         """
         изменяет информацию пользователя (имя, фамилия, любимый жанр)
         """
         new_data = request.json
-        # unknown user here if only Role is submitted. updates if Username is submitted.
         user_db = user_service.get_one_by_email(new_data)
         print(f"user_db - {user_db}")
 
-        # # field by field
-        # if "name" in new_data:
-        #     user_db["name"] = new_data.get("name")
-        # if "surname" in new_data:
-        #     user_db["surname"] = new_data.get("surname")
-        # if "favorite_genre" in new_data:
-        #     user_db["favorite_genre"] = new_data.get("favorite_genre")
+        user_role = new_data.get("role")
+        if user_role != "user":
+            abort(400)
 
-        # general update === prohibit indicating Role as admin by user -default user to be changed by admin only.
-        # or use above to allow updating only 3 non-required fields, password is updated separately.
         user_service.update_by_email(new_data)
-
         return "", 204
 
 
 @user_profile_ns.route('/password')
 class UsersView(Resource):
+    @auth_required
     def put(self):
         """
         обновляет пароль пользователя

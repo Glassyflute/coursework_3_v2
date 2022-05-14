@@ -1,5 +1,6 @@
 from dao.model.user import User
 from flask import request
+from flask import abort
 
 
 class UserDAO:
@@ -37,11 +38,17 @@ class UserDAO:
 
     def update(self, new_data):
         item_id = new_data.get("id")
+        if item_id is None:
+            abort(401)
+
         item = self.session.query(User).filter(User.id == item_id).update(new_data)
         self.session.commit()
 
     def update_by_email(self, new_data):
         email = new_data.get("email")
+        if email is None:
+            abort(401)
+
         item = self.session.query(User).filter(User.email == email).update(new_data)
         self.session.commit()
 

@@ -1,4 +1,5 @@
 from dao.model.user import User
+from flask import abort
 
 
 class AuthUserDAO:
@@ -26,6 +27,9 @@ class AuthUserDAO:
 
     def update(self, new_data):
         item_id = new_data.get("id")
+        if item_id is None:
+            abort(401)
+
         item = self.session.query(User).filter(User.id == item_id).update(new_data)
         self.session.commit()
 

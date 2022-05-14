@@ -19,7 +19,6 @@ class GenresView(Resource):
         return "", 201
 
 
-# item_id
 @genre_ns.route('/<int:item_id>')
 class GenreView(Resource):
     @auth_required
