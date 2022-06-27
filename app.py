@@ -43,7 +43,15 @@ def create_data(app, db):
         u3 = User(email="olga@gmail.com", password=get_hash("P@ssw0rd"), role="admin")
 
         with db.session.begin():
-            db.session.add_all([u1, u2, u3])
+            user_email_1 = "vasya@gmail.com"
+            user_email_2 = "oleg@gmail.com"
+            user_email_3 = "olga@gmail.com"
+            user_selected_1 = db.session.query(User).filter(User.email == user_email_1).one_or_none()
+            user_selected_2 = db.session.query(User).filter(User.email == user_email_2).one_or_none()
+            user_selected_3 = db.session.query(User).filter(User.email == user_email_3).one_or_none()
+
+            if not user_selected_1 or not user_selected_2 or not user_selected_3:
+                db.session.add_all([u1, u2, u3])
 
 
 app = create_app(Config())

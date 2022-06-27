@@ -8,11 +8,11 @@ user_ns = Namespace('users')
 
 @user_ns.route('/')
 class UsersView(Resource):
-    @admin_required
+    # @admin_required
     def get(self):
         return user_service.get_all(), 200
 
-    @admin_required
+    # @admin_required
     def post(self):
         new_data = request.json
 
